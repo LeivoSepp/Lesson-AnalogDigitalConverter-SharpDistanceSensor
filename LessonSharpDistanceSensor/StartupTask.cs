@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Net.Http;
 using Windows.ApplicationModel.Background;
 using Windows.Devices.Spi;
 using Windows.Devices.Gpio;
@@ -86,17 +83,18 @@ namespace LessonSharpDistanceSensor
                 //val = 65 * Math.Pow(val, -1.1); //distance in cm Sharp GP2Y0A02 20-150cm
 
                 SendMessages(val.ToString());
-                if (val < 1024 / 3) //ADC value third low 0...341
+
+                if (val < 15) //distance <15cm
                 {
                     redPin.Write(GpioPinValue.High);
                     greenPin.Write(GpioPinValue.Low);
                 }
-                else if (val > 1024 * 2 / 3) //ADC value third high 683...1024
+                else if (val > 27) //distance over 27cm
                 {
                     redPin.Write(GpioPinValue.Low);
                     greenPin.Write(GpioPinValue.High);
                 }
-                else //ADC value in the middle 342...682
+                else //distance between 16-26cm
                 {
                     redPin.Write(GpioPinValue.High);
                     greenPin.Write(GpioPinValue.High);
